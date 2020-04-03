@@ -194,13 +194,12 @@ variable "app_certificates" {
   ```
   app_certificates = {
     awx-cert = {
-      org = Bridge Connector
+      org = My Org
       project = DevOps
-      cn = awx.bcrdev.us
+      cn = awx.example.us
       validity_period = 4800
       dns_names = [
-        awx-bcrdev.us,
-        ansible.bcrdev.us
+        awx.example.us
       ]
     }
   }

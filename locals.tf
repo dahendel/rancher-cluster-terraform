@@ -26,23 +26,33 @@ locals {
     }
   }
 
-  project_limit_defaults = {
-    cpu = "2000m"
-    memory = "2000Mi"
-    stroage = "2Gi"
-  }
+  ro_mappings = flatten([
+    for k, v in var.projects: {
+      for g in v["read_only_groups"]:
+        g => {
+          project = k
+        }
+    }
+  ])
 
-  namespacs_limit_defaults = {
-    cpu = "2000m"
-    memory = "500Mi"
-    stroage = "1Gi"
-  }
+  member_mappings = flatten([
+    for k, v in var.projects: {
+      for g in v["member_groups"]:
+        g => {
+          project = k
+        }
+    }
+  ])
 
-  container_limit_defaults = {
-    cpu = "20m"
-    reqs_cpu = "1m"
-    memory = "20mi"
-    reqs_mem = "1Mi"
-  }
+  namespaces = flatten([
+    for k, v in var.projects:[
+      for nsk, nsv in v["namespaces"]: {
+            namespace = nsk
+            project = k
+            cpu = lookup(nsv, "cpu", "")
+            memory =  lookup(nsv, "memory", "")
+            storage =  lookup(nsv, "storage", "")
+    }]
+  ])
 
 }

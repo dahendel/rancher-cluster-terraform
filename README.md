@@ -3,6 +3,8 @@
 This module is built from the [Rancher On-Boarding Guide](https://github.com/rancher/onboarding-content/tree/master)
 It Builds clusters in AWS and enables the cloud_provider aws in the rke config
 
+See [EXAMPLES](./examples) for terragrunt and terraform tfvars examples
+
 ## Providers
 
 | Name | Version |
@@ -22,7 +24,7 @@ It Builds clusters in AWS and enables the cloud_provider aws in the rke config
 | vpc\_id | VPC ID to deploy cluster to | `string` | n/a | yes |
 | admin\_group\_id | Admin Group ID | `string` | `""` | no |
 | ami\_image\_name | AMI Image for the node templates | `string` | `"ubuntu-minimal/images/*/ubuntu-bionic-18.04-*"` | no |
-| app\_certificates | Map of Maps to create application tls certificates.<br><br>  Key: Certificate secret name ex. awx-cert<br><br>  Values:<br>    - `org:` Organization Name (required)<br>    - `cn:` Common Name (required)<br>    - `dns_names:` List of DNS Names (required)<br>    - `validity_period:` Integer validity period in hours (optional) (default: 4800)<br>    - `project:` Valid project from projects map (required)<br><br>  Example:<pre>  app_certificates = {<br>    awx-cert = {<br>      org = Bridge Connector<br>      project = DevOps<br>      cn = awx.bcrdev.us<br>      validity_period = 4800<br>      dns_names = [<br>        awx-bcrdev.us,<br>        ansible.bcrdev.us<br>      ]<br>    }<br>  }<br>  </pre> | `map` | `{}` | no |
+| app\_certificates | Map of Maps to create application tls certificates.<br><br>  Key: Certificate secret name ex. awx-cert<br><br>  Values:<br>    - `org:` Organization Name (required)<br>    - `cn:` Common Name (required)<br>    - `dns_names:` List of DNS Names (required)<br>    - `validity_period:` Integer validity period in hours (optional) (default: 4800)<br>    - `project:` Valid project from projects map (required)<br><br>  Example:<pre>  app_certificates = {<br>    awx-cert = {<br>      org = My Org<br>      project = DevOps<br>      cn = awx.example.us<br>      validity_period = 4800<br>      dns_names = [<br>        awx.example.us,<br>     ]<br>    }<br>  }<br>  </pre> | `map` | `{}` | no |
 | catalogs | Map of Maps to add Catalogs<br><br>  Key: Catalog Name awx<br><br>  Values:<br>    - `url:` Catalog git compatible URL (required)<br>    - `branch:` Git branch (optional)<br>    - `scope:` Global, Cluster, Project scope (optional) (default: global)<br>    - `project:` Project to add the catalog to (optional/required with scope=project)<br>    - `username:` Username to use when cloning helm repository (optional)<br>    - `password:` Password for helm repo user (optional)<br><br>  Example:<pre>  catalogs = {<br>    awx = {<br>      url = "20m"<br>    }<br>  }<br>  </pre> | `map` | `{}` | no |
 | cloud\_credential\_id | Cloud Crecdential from rancher-ha module | `string` | `""` | no |
 | controlplane\_instance\_type | Control Plane instance type based on master and master components recomendations: https://kubernetes.io/docs/setup/best-practices/cluster-large/#size-of-master-and-master-components | `string` | `"m3.large"` | no |

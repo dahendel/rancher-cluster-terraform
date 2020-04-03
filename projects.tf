@@ -1,37 +1,3 @@
-locals {
-  ro_mappings = flatten([
-    for k, v in var.projects: {
-      for g in v["read_only_groups"]:
-        g => {
-          project = k
-        }
-    }
-  ])
-
-  member_mappings = flatten([
-    for k, v in var.projects: {
-      for g in v["member_groups"]:
-        g => {
-          project = k
-        }
-    }
-  ])
-
-  namespaces = flatten([
-    for k, v in var.projects:[
-      for nsk, nsv in v["namespaces"]: {
-            namespace = nsk
-            project = k
-            cpu = lookup(nsv, "cpu", "")
-            memory =  lookup(nsv, "memory", "")
-            storage =  lookup(nsv, "storage", "")
-    }]
-  ])
-
-}
-
-
-
 resource "rancher2_project" "projects" {
   depends_on = [
     rancher2_node_pool.controlplane_pool,
